@@ -73,14 +73,17 @@ public abstract class Repo implements IRepo{
             return null;
         }
     }
-    protected List<Animal> getAll(String conStr, boolean isYang){
+    protected List<Animal> getAll(String conStr,boolean isNursery, boolean isYang){
         List<Animal> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())) {
-            String query = "select ant.atID, ant.atName, ast.astID, ast.astName, a.aID, a.aName, a.aBirthDate \n" +
+            String query = "select ant.atID, ant.atName, ast.astID, ast.astName, a.aID, a.aName, a.aBirthDate, a.aInNursery \n" +
                     "from AnimalTypes ant \n" +
                     "join AnimalSubTypes ast on (ant.atID = ast.atID)\n" +
                     "join Animals a on (a.astID = ast.astID)\n" +
-                    "where a.aInNursery = true";
+                    "where (1=1)";
+            if (isNursery) {
+                query += "and a.aInNursery = true";
+            }
             if (isYang) {
                 query += " and TIMESTAMPDIFF(YEAR, a.aBirthDate, CURDATE()) < 3";
             }
@@ -112,6 +115,7 @@ public abstract class Repo implements IRepo{
                         animal = new Animal(resultSet.getInt(5),resultSet.getString(6), date);
                         break;
                 }
+                animal.setInNursery(resultSet.getBoolean(8));
                 if (animal != null) {
                     result.add(animal);
                 }

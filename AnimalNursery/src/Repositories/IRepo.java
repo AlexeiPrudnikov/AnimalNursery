@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface IRepo {
     public List<Animal> getAll();
+    public List<Animal> getInNursery();
     public List<Animal> getYang();
+    public List<Animal> getYangInNursery();
 }

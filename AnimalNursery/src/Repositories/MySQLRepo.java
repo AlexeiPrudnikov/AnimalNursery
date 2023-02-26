@@ -26,13 +26,26 @@ public class MySQLRepo extends Repo {
 
     @Override
     public List<Animal> getAll() {
-        List<Animal> result = super.getAll(conStr, false);
+        List<Animal> result = super.getAll(conStr, false, false);
+        return result;
+    }
+
+    @Override
+    public List<Animal> getInNursery() {
+        List<Animal> result = super.getAll(conStr, true, false);
         return result;
     }
 
     @Override
     public List<Animal> getYang() {
-        List<Animal> result = super.getAll(conStr, true);
+        List<Animal> result = super.getAll(conStr, false, true);
         return result;
     }
+
+    @Override
+    public List<Animal> getYangInNursery() {
+        List<Animal> result = super.getAll(conStr, true, true);
+        return result;
+    }
+
 }
