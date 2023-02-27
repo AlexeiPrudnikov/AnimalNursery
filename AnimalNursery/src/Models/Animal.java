@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Animal {
+public class Animal implements IMove{
     private int id;
     private String name;
     private Calendar birthDate;
@@ -72,5 +72,14 @@ public class Animal {
             result += ", не в приюте.";
         }
         return result;
+    }
+    @Override
+    public void moveAnimal() {
+        inNursery = false;
+    }
+
+    @Override
+    public void returnAnimal() {
+        inNursery = true;
     }
 }

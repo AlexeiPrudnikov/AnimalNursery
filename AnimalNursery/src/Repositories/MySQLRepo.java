@@ -22,25 +22,25 @@ public class MySQLRepo extends Repo {
     }
     @Override
     public List<Animal> getAll() {
-        List<Animal> result = super.getAll(conStr, false, false);
+        List<Animal> result = super.getAll(conStr, false, false, 0);
         return result;
     }
 
     @Override
     public List<Animal> getInNursery() {
-        List<Animal> result = super.getAll(conStr, true, false);
+        List<Animal> result = super.getAll(conStr, true, false, 0);
         return result;
     }
 
     @Override
     public List<Animal> getYang() {
-        List<Animal> result = super.getAll(conStr, false, true);
+        List<Animal> result = super.getAll(conStr, false, true, 0);
         return result;
     }
 
     @Override
     public List<Animal> getYangInNursery() {
-        List<Animal> result = super.getAll(conStr, true, true);
+        List<Animal> result = super.getAll(conStr, true, true, 0);
         return result;
     }
 
@@ -69,6 +69,16 @@ public class MySQLRepo extends Repo {
     public HashMap<String, Integer> getSubAnimalTypes() {
         HashMap<String, Integer> result = super.getAnimalSubTypes(conStr);
         return result;
+    }
+
+    @Override
+    public Animal getAnimalByID(int id) {
+       List<Animal> animals = super.getAll(conStr, false, false, id);
+       if (animals != null) {
+           Animal animal = animals.get(0);
+           return animal;
+       }
+       return null;
     }
 
 }

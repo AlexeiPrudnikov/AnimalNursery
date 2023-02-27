@@ -7,9 +7,6 @@ import Models.Packs.Mule;
 import Models.Pets.Cat;
 import Models.Pets.Dog;
 import Models.Pets.Hamster;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ClientApp implements IClient {
@@ -24,6 +21,8 @@ public class ClientApp implements IClient {
         mainMenu.add("Добавить животное");
         mainMenu.add("Изменить данные животного");
         mainMenu.add("Удалить животное из списка приюта");
+        mainMenu.add("Временно убрать животное из приюта");
+        mainMenu.add("Вернуть животное в приют");
         mainMenu.add("Выход");
     }
 
@@ -115,6 +114,11 @@ public class ClientApp implements IClient {
         return animal;
     }
 
+    @Override
+    public Animal editAnimal(HashMap<String, Integer> animalSubTypes) {
+        return null;
+    }
+
     public int getMenu() {
         return chooseItem(mainMenu);
     }
@@ -130,7 +134,7 @@ public class ClientApp implements IClient {
 
     @Override
     public int enterID() {
-        System.out.print("Введите ID:");
+        System.out.print("Введите ID: ");
         Scanner scanner = new Scanner(System.in);
         try {
             return scanner.nextInt();

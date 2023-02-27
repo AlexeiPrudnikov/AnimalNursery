@@ -13,16 +13,6 @@ public class Mule extends PackAnimal {
         super(id, name, birthDate);
     }
     @Override
-    public void sendToWinter() {
-
-    }
-
-    @Override
-    public void returnFromWinter() {
-
-    }
-
-    @Override
     public String toString() {
         return "Осел: " + super.toString();
     }

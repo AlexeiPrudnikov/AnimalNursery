@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IClient {
     public Animal getAnimal(HashMap<String, Integer> animalSubTypes);
+    public Animal editAnimal(HashMap<String, Integer> animalSubTypes);
     public int getMenu();
     public int chooseItem (List<String> menu);
     public void printResult(List<Animal> animals);

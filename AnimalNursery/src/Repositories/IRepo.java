@@ -15,4 +15,5 @@ public interface IRepo {
     public void delete(int id);
     public HashMap<String, Integer> getAnimalTypes();
     public HashMap<String, Integer> getSubAnimalTypes();
+    public Animal getAnimalByID(int id);
 }

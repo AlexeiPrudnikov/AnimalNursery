@@ -69,7 +69,7 @@ public abstract class Repo implements IRepo{
         String[] types = animal.getClass().toString().split("\\.");
         return types[types.length - 1];
     }
-    protected List<Animal> getAll(String conStr,boolean isNursery, boolean isYang){
+    protected List<Animal> getAll(String conStr,boolean isNursery, boolean isYang, int id){
         List<Animal> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())) {
             String query = "select ant.atID, ant.atName, ast.astID, ast.astName, a.aID, a.aName, a.aBirthDate, a.aInNursery \n" +
@@ -77,11 +77,15 @@ public abstract class Repo implements IRepo{
                     "join AnimalSubTypes ast on (ant.atID = ast.atID)\n" +
                     "join Animals a on (a.astID = ast.astID)\n" +
                     "where (1=1)";
-            if (isNursery) {
-                query += "and a.aInNursery = true";
-            }
-            if (isYang) {
-                query += " and TIMESTAMPDIFF(YEAR, a.aBirthDate, CURDATE()) < 3";
+            if (id > 0) {
+                query += " and aID = " + id;
+            } else {
+                if (isNursery) {
+                    query += "and a.aInNursery = true";
+                }
+                if (isYang) {
+                    query += " and TIMESTAMPDIFF(YEAR, a.aBirthDate, CURDATE()) < 3";
+                }
             }
             query += " order by aID";
             Statement statement = connection.createStatement();
@@ -221,7 +225,7 @@ public abstract class Repo implements IRepo{
                     statement.executeUpdate(query);
                     break;
             }
-
+            System.out.println("Данные о животном изменены");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

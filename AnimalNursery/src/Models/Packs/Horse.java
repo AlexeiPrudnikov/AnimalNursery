@@ -13,16 +13,6 @@ public class Horse extends PackAnimal {
         super(id, name, birthDate);
     }
     @Override
-    public void sendToWinter() {
-
-    }
-
-    @Override
-    public void returnFromWinter() {
-
-    }
-
-    @Override
     public String toString() {
         return "Лошадь: " + super.toString();
     }

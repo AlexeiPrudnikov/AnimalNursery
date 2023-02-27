@@ -12,6 +12,7 @@ public class Control {
     private HashMap<String, Integer> animalTypes;
     private HashMap<String, Integer> animalSubTypes;
 
+
     public Control(IRepo repo, IClient client) {
         animalTypes = new HashMap<>();
         animalSubTypes = new HashMap<>();
@@ -31,6 +32,8 @@ public class Control {
 
     public void start() {
         int item = 0;
+        int id = 0;
+        Animal animal;
         do {
             item = client.getMenu();
             switch (item) {
@@ -50,13 +53,35 @@ public class Control {
                     repo.add(client.getAnimal(animalSubTypes), animalSubTypes);
                     break;
                 case 6:
-                    int id = client.enterID();
-                    Animal animal = client.getAnimal(animalSubTypes);
-                    animal.setId(id);
-                    repo.edit(animal, animalSubTypes);
+                    id = client.enterID();
+                    animal = repo.getAnimalByID(id);
+                    if (animal != null){
+                        System.out.println(animal);
+                        animal = client.getAnimal(animalSubTypes);
+                        animal.setId(id);
+                        repo.edit(animal, animalSubTypes);
+                    }
                     break;
                 case 7:
                     repo.delete(client.enterID());
+                    break;
+                case 8:
+                    id = client.enterID();
+                    animal = repo.getAnimalByID(id);
+                    if (animal != null){
+                        System.out.println(animal);
+                        animal.moveAnimal();
+                        repo.edit(animal, animalSubTypes);
+                    }
+                    break;
+                case 9:
+                    id = client.enterID();
+                    animal = repo.getAnimalByID(id);
+                    if (animal != null){
+                        System.out.println(animal);
+                        animal.returnAnimal();
+                        repo.edit(animal, animalSubTypes);
+                    }
                     break;
             }
         } while (item != -100);
