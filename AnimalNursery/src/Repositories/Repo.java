@@ -57,7 +57,7 @@ public abstract class Repo implements IRepo{
         try {
             String[] parts = date.split("-");
             Calendar result = new GregorianCalendar(Integer.parseInt(parts[0]),
-                    Integer.parseInt(parts[1]),
+                    Integer.parseInt(parts[1]) - 1,
                     Integer.parseInt(parts[2]));
             return result;
         } catch (Exception ex){
@@ -83,6 +83,7 @@ public abstract class Repo implements IRepo{
             if (isYang) {
                 query += " and TIMESTAMPDIFF(YEAR, a.aBirthDate, CURDATE()) < 3";
             }
+            query += " order by aID";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             Animal animal = null;
@@ -104,6 +105,7 @@ public abstract class Repo implements IRepo{
                         break;
                     case "Осел":
                         animal = new Mule(resultSet.getInt(5),resultSet.getString(6), date);
+                        break;
                     case "Верблюд":
                         animal = new Camel(resultSet.getInt(5),resultSet.getString(6), date);
                         break;
@@ -180,7 +182,7 @@ public abstract class Repo implements IRepo{
                     statement.executeUpdate(query);
                     break;
             }
-
+            System.out.println("Животное добавлено");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
