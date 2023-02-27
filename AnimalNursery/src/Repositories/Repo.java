@@ -65,6 +65,10 @@ public abstract class Repo implements IRepo{
             return null;
         }
     }
+    private String getType(Animal animal){
+        String[] types = animal.getClass().toString().split("\\.");
+        return types[types.length - 1];
+    }
     protected List<Animal> getAll(String conStr,boolean isNursery, boolean isYang){
         List<Animal> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())) {
@@ -149,9 +153,8 @@ public abstract class Repo implements IRepo{
         String query = "insert into animals (aName, astID, aBirthDate, aInNursery) values (";
         try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
             Statement statement = connection.createStatement();
-            String[] types = animal.getClass().toString().split("\\.");
             query += "'" + animal.getName() + "', ";
-            switch (types[types.length - 1]) {
+            switch (getType(animal)) {
                 case "Dog":
                     query +=  animalSubTypes.get("Собака") + ", '" + date + "', true)";
                     statement.executeUpdate(query);
@@ -174,6 +177,45 @@ public abstract class Repo implements IRepo{
                     break;
                 case "Camel":
                     query += animalSubTypes.get("Верблюд") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    protected void edit (String conStr,HashMap<String, Integer> animalSubTypes,  Animal animal, String date) {
+        String query = "update animals " +
+                        "set aName = '" + animal.getName() + "', " +
+                        "aInNursery = " + animal.isInNursery() + ", " +
+                        "aBirthDate = '" + date + "', " +
+                        "astID = ";
+        try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
+            Statement statement = connection.createStatement();
+            switch (getType(animal)) {
+                case "Dog":
+                    query +=  animalSubTypes.get("Собака") + " where aID = " + animal.getId();
+                    statement.executeUpdate(query);
+                    break;
+                case "Cat":
+                    query += animalSubTypes.get("Кошка") + " where aID = " + animal.getId();
+                    statement.executeUpdate(query);
+                    break;
+                case "Hamster":
+                    query += animalSubTypes.get("Хомяк") + " where aID = " + animal.getId();
+                    statement.executeUpdate(query);
+                    break;
+                case "Mule":
+                    query += animalSubTypes.get("Осел")  + " where aID = " + animal.getId();
+                    statement.executeUpdate(query);
+                    break;
+                case "Horse":
+                    query += animalSubTypes.get("Лошадь") + " where aID = " + animal.getId();
+                    statement.executeUpdate(query);
+                    break;
+                case "Camel":
+                    query += animalSubTypes.get("Верблюд") + " where aID = " + animal.getId();
                     statement.executeUpdate(query);
                     break;
             }

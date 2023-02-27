@@ -50,6 +50,11 @@ public class MySQLRepo extends Repo {
     }
 
     @Override
+    public void edit(Animal animal, HashMap<String, Integer> animalSubTypes) {
+        super.edit(conStr, animalSubTypes, animal, getMySqlDate(animal.getBirthDate()));
+    }
+
+    @Override
     public void delete(int id) {
         super.delete(conStr, id);
     }
