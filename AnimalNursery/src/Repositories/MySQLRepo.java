@@ -1,20 +1,11 @@
 package Repositories;
 
 import Models.Animal;
-import Models.Packs.Camel;
-import Models.Packs.Horse;
-import Models.Packs.Mule;
-import Models.Pets.Cat;
-import Models.Pets.Dog;
-import Models.Pets.Hamster;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class MySQLRepo extends Repo {
@@ -23,7 +14,12 @@ public class MySQLRepo extends Repo {
         super(server, database, user, password);
         this.conStr = "jdbc:mysql://" + getServer() + ":3306/" + getDatabase();
     }
-
+    public String getMySqlDate(Calendar calendar) {
+        String result = "";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        result = df.format(calendar.getTime());
+        return result;
+    }
     @Override
     public List<Animal> getAll() {
         List<Animal> result = super.getAll(conStr, false, false);
@@ -45,6 +41,28 @@ public class MySQLRepo extends Repo {
     @Override
     public List<Animal> getYangInNursery() {
         List<Animal> result = super.getAll(conStr, true, true);
+        return result;
+    }
+
+    @Override
+    public void add(Animal animal, HashMap<String, Integer> animalSubTypes) {
+        super.add(conStr, animalSubTypes, animal, getMySqlDate(animal.getBirthDate()));
+    }
+
+    @Override
+    public void delete(int id) {
+        super.delete(conStr, id);
+    }
+
+    @Override
+    public HashMap<String, Integer> getAnimalTypes() {
+        HashMap<String, Integer> result = super.getAnimalTypes(conStr);
+        return result;
+    }
+
+    @Override
+    public HashMap<String, Integer> getSubAnimalTypes() {
+        HashMap<String, Integer> result = super.getAnimalSubTypes(conStr);
         return result;
     }
 

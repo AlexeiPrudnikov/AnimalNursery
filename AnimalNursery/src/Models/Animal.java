@@ -14,12 +14,24 @@ public class Animal {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Calendar getBirthDate() {
         return birthDate;
+    }
+
+    public void setBirthDate(Calendar birthDate) {
+        this.birthDate = birthDate;
     }
 
     public boolean isInNursery() {
@@ -50,7 +62,6 @@ public class Animal {
             return false;
         }
     }
-
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");

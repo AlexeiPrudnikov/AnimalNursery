@@ -1,21 +1,13 @@
 package Repositories;
 
 import Models.Animal;
-import Models.Packs.Camel;
-import Models.Packs.Horse;
-import Models.Packs.Mule;
-import Models.Pets.Cat;
-import Models.Pets.Dog;
-import Models.Pets.Hamster;
-
+import Models.Packs.*;
+import Models.Pets.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 public abstract class Repo implements IRepo{
     private String server;
@@ -124,5 +116,79 @@ public abstract class Repo implements IRepo{
             System.out.println(ex.getMessage());
         }
         return result;
+    }
+    protected HashMap<String, Integer> getAnimalSubTypes(String conStr){
+        HashMap<String, Integer> result = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
+            String query = "select astName, astID  from AnimalSubTypes order by astName";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                result.put(resultSet.getString(1), resultSet.getInt(2));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+    protected HashMap<String, Integer> getAnimalTypes(String conStr){
+        HashMap<String, Integer> result = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
+            String query = "select atName, atID  from AnimalTypes order by atName";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                result.put(resultSet.getString(1), resultSet.getInt(2));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+    protected void add (String conStr,HashMap<String, Integer> animalSubTypes,  Animal animal, String date) {
+        String query = "insert into animals (aName, astID, aBirthDate, aInNursery) values (";
+        try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
+            Statement statement = connection.createStatement();
+            String[] types = animal.getClass().toString().split("\\.");
+            query += "'" + animal.getName() + "', ";
+            switch (types[types.length - 1]) {
+                case "Dog":
+                    query +=  animalSubTypes.get("Собака") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+                case "Cat":
+                    query += animalSubTypes.get("Кошка") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+                case "Hamster":
+                    query += animalSubTypes.get("Хомяк") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+                case "Mule":
+                    query += animalSubTypes.get("Осел") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+                case "Horse":
+                    query += animalSubTypes.get("Лошадь") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+                case "Camel":
+                    query += animalSubTypes.get("Верблюд") + ", '" + date + "', true)";
+                    statement.executeUpdate(query);
+                    break;
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    protected void delete (String conStr, int id) {
+        String query = "delete from animals where aID = " + id;
+        try (Connection connection = DriverManager.getConnection(conStr, getUser(), getPassword())){
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
