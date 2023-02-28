@@ -24,14 +24,6 @@ public class Main {
         IClient client = new ClientApp();
         Control control = new Control(repo, client);
         control.start();
-//        System.out.println(true);
-//        IRepo repo = new MySQLRepo("localhost", "AnimalNursery", "root", "qwer1234");
-//        Control control = new Control(repo);
-//        HashMap<String, Integer> sub = control.getAnimalSubTypes();
-//        printList(repo.getAll());
-//        Animal animal = new Camel(3,"Вер",new GregorianCalendar(2010, Calendar.AUGUST, 22));
-//        repo.edit(animal,sub);
-//        printList(repo.getAll());
 
     }
 }
